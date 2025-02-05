@@ -65,5 +65,28 @@ namespace NorthwindRestApi.Controllers
             }
         }
 
+        //Asiakkaan poistaminen
+        [HttpDelete("{id}")]
+        public ActionResult Delete(string id)
+        {
+            try
+            {
+                var asiakas = db.Customers.Find(id);
+
+                if (asiakas != null) // Jos id:llä löytyy asiakas
+                {
+                    db.Customers.Remove(asiakas);
+                    db.SaveChanges();
+                    return Ok("Asiakas " + asiakas.CompanyName + " poistettiin.");
+                }
+                return NotFound("Asiakasta id:llä " + id + " ei löytynyt.");
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.InnerException);
+            }
+        }
+
+
     }
 }
